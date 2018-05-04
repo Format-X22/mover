@@ -42,13 +42,15 @@ html(lang='ru')
                                 thead
                                     tr
                                         th(scope='col') #
+                                        th(scope='col') Активно
                                         th(scope='col') Направление
                                         th(scope='col') Значение
                                         th(scope='col') Тейк
                                         th(scope='col') Стоп
                                         th(scope='col') Шаг
-                                        th(scope='col') Дата
                                         th(scope='col') Смена
+                                        th(scope='col') Оригинал
+                                        th(scope='col') Дата
                                         th(scope='col') Действия
                                 tbody
                                     script.
@@ -59,13 +61,15 @@ html(lang='ru')
                                     | <% @task_list.each do |task| %>
                                     tr
                                         td.m-id <%= task[:id] %>
+                                        td.m-direction <%= task[:active] ? 'Да' : 'Нет' %>
                                         td.m-direction <%= task[:direction] %>
-                                        td.m-value <%= task[:value] %>
+                                        td.m-value <%= nil %>
                                         td.m-take <%= nil %>
                                         td.m-stop <%= nil %>
                                         td.m-step <%= task[:step] %>
-                                        td.m-date <%= task[:date].strftime('%d-%m-%y %R') %>
                                         td.m-change <%= nil %>
+                                        td.m-date <%= task[:value] %>
+                                        td.m-date <%= task[:date].strftime('%d-%m-%y %R') %>
                                         td.m-control
                                             button.m-delete.btn.btn-sm.btn-outline-danger(
                                                 onclick!='remove(eval(\'<%= task[:id] %>\'))'

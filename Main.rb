@@ -2,7 +2,12 @@ require 'sinatra'
 require 'sinatra/contrib/all'
 require 'sequel'
 
-TASK = Sequel.connect('sqlite://data.db')[:task]
+DB = Sequel.connect('sqlite://data.db')
+TASK = DB[:task]
+TAKE_LONG_MUL = 1.012
+TAKE_SHORT_MUL = 0.988
+STOP_LONG_MUL = 1.025
+STOP_SHORT_MUL = 0.975
 
 begin
 	DB.create_table :task do
@@ -11,6 +16,7 @@ begin
 		Float :value, null: false
 		Float :step, null: false
 		Time :date, default: Sequel::CURRENT_TIMESTAMP
+		TrueClass :active, null: false, default: false
 	end
 rescue
 	puts 'Tasks exists!'
