@@ -51,16 +51,28 @@ html(lang='ru')
                                         th(scope='col') Смена
                                         th(scope='col') Действия
                                 tbody
+                                    script.
+                                        function remove(id) {
+                                            $("[id=remove] [name=id]").val(id);
+                                            $("[id=remove]").submit();
+                                        }
+                                    | <% @task_list.each do |task| %>
                                     tr
-                                        td.m-id -
-                                        td.m-direction -
-                                        td.m-value -
-                                        td.m-take -
-                                        td.m-stop -
-                                        td.m-step -
-                                        td.m-date -
-                                        td.m-change -
-                                        td.m-control: button.m-delete.btn.btn-sm.btn-outline-danger X
+                                        td.m-id <%= task[:id] %>
+                                        td.m-direction <%= task[:direction] %>
+                                        td.m-value <%= task[:value] %>
+                                        td.m-take <%= nil %>
+                                        td.m-stop <%= nil %>
+                                        td.m-step <%= task[:step] %>
+                                        td.m-date <%= task[:date].strftime('%d-%m-%y %R') %>
+                                        td.m-change <%= nil %>
+                                        td.m-control
+                                            button.m-delete.btn.btn-sm.btn-outline-danger(
+                                                onclick!='remove(eval(\'<%= task[:id] %>\'))'
+                                            ) X
+                                    | <% end %>
+                            form#remove(action='remove' method='POST')
+                                input(type='number' name='id' required style='display: none')
             .mt-5
             .row
                 .col-lg
