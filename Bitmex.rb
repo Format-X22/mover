@@ -21,6 +21,10 @@ class Bitmex
 		#
 	end
 
+	def cancel_order(id)
+		#
+	end
+
 	def orders
 		endpoint = 'order'
 		payload = '?filter={"symbol": "XBTUSD", "open": true}'
@@ -41,12 +45,29 @@ class Bitmex
 		decode(raw_data).first
 	end
 
+	def deposit
+		endpoint = 'user/walletSummary'
+		payload = ''
+		expires = make_expires
+		signature = crypt(:get, endpoint, payload, expires)
+
+		raw_data = request(:get, request_url(endpoint, payload), headers(expires, signature))
+
+		decode(raw_data)[4]['marginBalance'].to_f / 100000000
+	end
+
 	private
 
 	def crypt(method, endpoint, payload, expires)
 		method = method.to_s.upcase
 
-		data = "#{method}#{API_POINT}#{endpoint}#{payload}#{expires}"
+		data = "#{method}#{API_POINT}#{endpoint}"
+
+		if method == 'GET'
+			data << "#{payload}#{expires}"
+		else
+			data << "#{expires}#{payload}"
+		end
 
 		OpenSSL::HMAC.hexdigest('SHA256', @private_key, URI.encode(data))
 	end
@@ -63,11 +84,12 @@ class Bitmex
 		}
 	end
 
-	def request(method, url, headers)
+	def request(method, url, headers, payload = nil)
 		RestClient::Request.execute(
 			method: method,
 			url: url,
-			headers: headers
+			headers: headers,
+			payload: payload
 		)
 	end
 
