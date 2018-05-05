@@ -13,8 +13,43 @@ class Bitmex
 		@private_key = keys[2]
 	end
 
-	def make_order(direction, price)
-		#
+	def make_enter(direction, price, amount)
+		if direction == :long
+			side = 'Buy'
+		else
+			side = 'Sell'
+		end
+
+		ord_type = 'Stop'
+		extra_payload = "simpleOrderQty=#{'%.8f' % amount}&ordType=#{ord_type}&side=#{side}&stopPx=#{price}"
+
+		make_order(extra_payload)
+	end
+
+	def make_stop(direction, price, amount)
+		if direction == :long
+			side = 'Sell'
+		else
+			side = 'Buy'
+		end
+
+		ord_type = 'Stop'
+		extra_payload = "simpleOrderQty=#{'%.8f' % amount}&ordType=#{ord_type}&side=#{side}&stopPx=#{price}"
+
+		make_order(extra_payload)
+	end
+
+	def make_take(direction, price, amount)
+		if direction == :long
+			side = 'Sell'
+		else
+			side = 'Buy'
+		end
+
+		ord_type = 'MarketIfTouched'
+		extra_payload = "simpleOrderQty=#{'%.8f' % amount}&ordType=#{ord_type}&side=#{side}&stopPx=#{price}"
+
+		make_order(extra_payload)
 	end
 
 	def move_order(id)
@@ -58,6 +93,15 @@ class Bitmex
 
 	private
 
+	def make_order(extra_payload)
+		endpoint = 'order'
+		payload = "symbol=XBTUSD&execInst=LastPrice&#{extra_payload}"
+		expires = make_expires
+		signature = crypt(:post, endpoint, payload, expires)
+
+		decode request(:post, request_url(endpoint), headers(expires, signature), payload)
+	end
+
 	def crypt(method, endpoint, payload, expires)
 		method = method.to_s.upcase
 
@@ -72,7 +116,7 @@ class Bitmex
 		OpenSSL::HMAC.hexdigest('SHA256', @private_key, URI.encode(data))
 	end
 
-	def request_url(endpoint, payload)
+	def request_url(endpoint, payload = '')
 		URI.encode("#{DOMAIN}#{API_POINT}#{endpoint}#{payload}")
 	end
 
