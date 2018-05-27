@@ -1,16 +1,16 @@
 require 'rest-client'
 require 'json'
 
-class Bitmex
+class Bitmex < AbstractStock
 
 	DOMAIN = 'https://www.bitmex.com'
 	API_POINT = '/api/v1/'
 
 	def initialize
-		keys = File.read('keys.txt').split("\n")
+		super(:bitmex)
 
-		@public_key = keys[1]
-		@private_key = keys[2]
+		@public_key = @keys[1]
+		@private_key = @keys[2]
 	end
 
 	def make_enter(direction, price, amount)
