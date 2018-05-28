@@ -41,8 +41,7 @@ html(lang='ru')
                             table.table.table-borderless.text-center
                                 thead
                                     tr
-                                        th(scope='col') #
-                                        th(scope='col') Активно
+                                        th(scope='col') Активированно
                                         th(scope='col') Направление
                                         th(scope='col') Значение
                                         th(scope='col') Тейк
@@ -53,28 +52,20 @@ html(lang='ru')
                                         th(scope='col') Дата
                                         th(scope='col') Действия
                                 tbody
-                                    script.
-                                        function remove(id) {
-                                            $("[id=remove] [name=id]").val(id);
-                                            $("[id=remove]").submit();
-                                        }
-                                    | <% @task_list.each do |task| %>
                                     tr
-                                        td.m-id <%= task[:id] %>
-                                        td.m-direction <%= task[:active] ? 'Да' : 'Нет' %>
-                                        td.m-direction <%= task[:direction] %>
+                                        td.m-direction <%= TASK.activated ? 'Да' : 'Нет' %>
+                                        td.m-direction <%= TASK.direction or '-' %>
                                         td.m-value <%= nil %>
                                         td.m-take <%= nil %>
                                         td.m-stop <%= nil %>
-                                        td.m-step <%= task[:step] %>
-                                        td.m-change <%= nil %>
-                                        td.m-date <%= task[:value] %>
-                                        td.m-date <%= task[:date].strftime('%d-%m-%y %R') %>
+                                        td.m-step <%= TASK.step or '-' %>
+                                        td.m-change <%= nil or '-' %>
+                                        td.m-date <%= TASK.price or '-' %>
+                                        td.m-date <%= TASK.date&.strftime('%d-%m-%y %R') or '-' %>
                                         td.m-control
                                             button.m-delete.btn.btn-sm.btn-outline-danger(
-                                                onclick!='remove(eval(\'<%= task[:id] %>\'))'
+                                                onclick!='$(\'[id=remove]\').submit();'
                                             ) X
-                                    | <% end %>
                             form#remove(action='remove' method='POST')
                                 input(type='number' name='id' required style='display: none')
             .mt-5

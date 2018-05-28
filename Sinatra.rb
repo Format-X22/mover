@@ -11,8 +11,6 @@ end
 get '/' do
 	check_auth
 
-	@task_list = TASK.all
-
 	erb File.read('public/index.html')
 end
 
@@ -20,11 +18,7 @@ post '/add' do
 	check_auth
 	required_params :direction, :start, :step
 
-	direction = params[:direction]
-	value = params[:start]
-	step = params[:step]
-
-	TASK.insert(direction: direction, value: value, step: step)
+	TASK.set(params[:direction], params[:start], params[:step])
 
 	redirect '/'
 end
@@ -33,7 +27,7 @@ post '/remove' do
 	check_auth
 	required_params :id
 
-	TASK.where(id: params[:id]).delete
+	TASK.off
 
 	redirect '/'
 end
