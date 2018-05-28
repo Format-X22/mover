@@ -43,24 +43,22 @@ html(lang='ru')
                                     tr
                                         th(scope='col') Активированно
                                         th(scope='col') Направление
-                                        th(scope='col') Значение
                                         th(scope='col') Тейк
                                         th(scope='col') Стоп
                                         th(scope='col') Шаг
-                                        th(scope='col') Смена
                                         th(scope='col') Оригинал
+                                        th(scope='col') Сейчас
                                         th(scope='col') Дата
                                         th(scope='col') Действия
                                 tbody
                                     tr
                                         td.m-direction <%= TASK.activated ? 'Да' : 'Нет' %>
                                         td.m-direction <%= TASK.direction or '-' %>
-                                        td.m-value <%= nil %>
-                                        td.m-take <%= nil %>
-                                        td.m-stop <%= nil %>
+                                        td.m-take <%= TASK.take or '-' %>
+                                        td.m-stop <%= TASK.stop or '-' %>
                                         td.m-step <%= TASK.step or '-' %>
-                                        td.m-change <%= nil or '-' %>
                                         td.m-date <%= TASK.price or '-' %>
+                                        td.m-date <%= TASK.current or '-' %>
                                         td.m-date <%= TASK.date&.strftime('%d-%m-%y %R') or '-' %>
                                         td.m-control
                                             button.m-delete.btn.btn-sm.btn-outline-danger(

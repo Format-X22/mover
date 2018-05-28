@@ -58,10 +58,20 @@ class Loop
 
 		BITMEX.make_take(direction, take, amount)
 		BITMEX.make_stop(direction, stop, amount)
+
+		TASK.take = take
+		TASK.stop = stop
 	end
 
 	def exec_move
-		#
+		if TASK.direction == :long
+			price = TASK.current + TASK.step
+		else
+			price = TASK.current - TASK.step
+		end
+
+		BITMEX.move_enter(price)
+		TASK.current = price
 	end
 
 	def new_candle?

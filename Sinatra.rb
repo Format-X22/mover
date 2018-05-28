@@ -29,5 +29,9 @@ post '/remove' do
 
 	TASK.off
 
+	if BITMEX.order_list.size == 1
+		BITMEX.cancel_enter
+	end
+
 	redirect '/'
 end
