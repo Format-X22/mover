@@ -23,10 +23,7 @@ class Loop
 
 			if BITMEX.position
 				TASK.activated = true unless TASK.activated
-
-				if orders_count == 0
-					set_take_and_stop
-				end
+				set_take_and_stop
 			else
 				if orders_count == 0
 					TASK.off
@@ -40,11 +37,27 @@ class Loop
 	end
 
 	def set_enter
-		BITMEX.make_enter(TASK.direction, TASK.price, BITMEX.deposit_value)
+		value = BITMEX.deposit_value * MARGIN_MUL - 0.00000001
+
+		BITMEX.make_enter(TASK.direction, TASK.price, value)
 	end
 
 	def set_take_and_stop
-		#
+		position = BITMEX.position
+		direction = TASK.direction
+		price = position[:price]
+		amount = position[:amount]
+
+		if direction == :long
+			take = price * TAKE_LONG_MUL
+			stop = price * STOP_LONG_MUL
+		else
+			take = price * TAKE_SHORT_MUL
+			stop = price * STOP_SHORT_MUL
+		end
+
+		BITMEX.make_take(direction, take, amount)
+		BITMEX.make_stop(direction, stop, amount)
 	end
 
 	def exec_move
