@@ -52,15 +52,15 @@ class Bitmex < AbstractStock
 		make_order(extra_payload)
 	end
 
-	def move_order(id)
+	def move_enter(price)
 		#
 	end
 
-	def cancel_order(id)
+	def cancel_enter
 		#
 	end
 
-	def orders
+	def order_list
 		endpoint = 'order'
 		payload = '?filter={"symbol": "XBTUSD", "open": true}'
 		expires = make_expires
@@ -80,7 +80,7 @@ class Bitmex < AbstractStock
 		decode(raw_data).first
 	end
 
-	def deposit
+	def deposit_value
 		endpoint = 'user/walletSummary'
 		payload = ''
 		expires = make_expires
@@ -89,6 +89,10 @@ class Bitmex < AbstractStock
 		raw_data = request(:get, request_url(endpoint, payload), headers(expires, signature))
 
 		decode(raw_data)[4]['marginBalance'].to_f / 100000000
+	end
+
+	def last_candles
+		#
 	end
 
 	private
@@ -139,10 +143,6 @@ class Bitmex < AbstractStock
 
 	def make_expires
 		5.minutes.since.to_i
-	end
-
-	def decode(data)
-		ActiveSupport::JSON.decode(data)
 	end
 end
 

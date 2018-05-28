@@ -38,6 +38,10 @@ class AbstractStock
 		# abstract
 	end
 
+	def last_candles
+		# abstract
+	end
+
 	protected
 
 	def decode(data)

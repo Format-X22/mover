@@ -1,27 +1,22 @@
 class Loop
 
 	def initialize(stocks)
-		init_stocks(stocks)
-		sync_candles
-
+		@stocks = {}
+		@last_candle_date = {}
 		@stock_id = nil
 		@stock = nil
 
+		init_stocks(stocks)
 		run
 	end
 
-	def init_stocks(stocks)
-		@stocks = {}
+	private
 
+	def init_stocks(stocks)
 		stocks.each do |stock|
 			stock_instance = stock.new
 			@stocks[stock.id] = stock_instance
-		end
-	end
-
-	def sync_candles
-		each_stock do
-			#
+			@last_candle_date[stocks.id] = 0
 		end
 	end
 
@@ -46,7 +41,14 @@ class Loop
 	end
 
 	def new_candle?
-		#
+		last_date = @stock.last_candles.last[:date]
+
+		if last_date > @last_candle_date[@stock_id]
+			@last_candle_date[@stock_id] = last_date
+			true
+		else
+			false
+		end
 	end
 
 	def each_stock(&block)
