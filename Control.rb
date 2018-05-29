@@ -33,8 +33,12 @@ class Control
 		when /^status$|^$/
 			print_status
 
+		when 'help'
+			print_help
+
 		else
 			puts 'Unknown command!'
+			print_help
 		end
 	end
 
@@ -141,6 +145,17 @@ class Control
 
 		puts '***'
 
+	end
+
+	def print_help
+		puts ''
+		puts 'Commands:'
+		puts "\tlong\t%price%\t%step%\t(example - long 8000 2.5)"
+		puts "\tshort\t%price%\t%step%\t(example - short 8000 2.5)"
+		puts "\tcancel\t\t\t(cancel task)"
+		puts "\tstatus\t\t\t([or just enter key] print verbose status)"
+		puts "\texit\t\t\t(exit with cancel task)"
+		puts ''
 	end
 
 end
