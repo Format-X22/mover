@@ -9,8 +9,8 @@ class Bitmex
 	def initialize
 		keys = File.read('keys.txt').split("\n")
 
-		@public_key = keys[1]
-		@private_key = keys[2]
+		@public_key = keys[0]
+		@private_key = keys[1]
 	end
 
 	def make_enter(direction, price, amount)
