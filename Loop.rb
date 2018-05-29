@@ -37,7 +37,7 @@ class Loop
 	end
 
 	def set_enter
-		value = BITMEX.deposit_value * MARGIN_MUL - 0.00000001
+		value = BITMEX.deposit_value * MARGIN_MUL
 
 		BITMEX.make_enter(TASK.direction, TASK.price, value)
 	end
