@@ -1,5 +1,5 @@
 class StateStore
-	attr_accessor :direction, :price, :step, :current, :take, :stop
+	attr_accessor :direction, :price, :step, :current, :take, :stop, :cycle_mode
 
 	def initialize
 		clear
@@ -18,6 +18,7 @@ class StateStore
 		@is_parcel = false
 		@is_processed = false
 		@is_shutdown = false
+		@cycle_mode = :init
 	end
 
 	def active?
