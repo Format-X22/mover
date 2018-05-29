@@ -1,13 +1,12 @@
 require 'active_support/all'
-#require_relative 'Cfg'
-#require_relative 'Bitmex'
-#require_relative 'Loop'
-
+require_relative 'Cfg'
+require_relative 'Bitmex'
 require_relative 'StateStore'
 require_relative 'Control'
 require_relative 'Cycle'
 
 STATE = StateStore.new
+BITMEX = Bitmex.new
 
 control = Thread.new do
 	Control.new

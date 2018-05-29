@@ -149,5 +149,3 @@ class Bitmex
 		ActiveSupport::JSON.decode(data)
 	end
 end
-
-BITMEX = Bitmex.new
